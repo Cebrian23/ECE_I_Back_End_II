@@ -27,5 +27,5 @@ export type Peticion_Song = {
 export type Song_Short = {
     id: string,
     name: string,
-    cover: string,
+    cover?: string,
 }
