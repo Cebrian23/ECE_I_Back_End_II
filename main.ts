@@ -3,6 +3,10 @@ import { AlbumsCollection, BandsCollection, BooksCollection,
          EventsCollection, HeraldriesCollection, LegendsCollection,
          MithsCollection, MonumentsCollection, OrganizationsCollection,
          PeopleCollection, SongsCollection, WritersCollection } from "./db/conection.ts";
+         import { LegendDB, Peticion_Legend } from "./types/legend/Legend.ts";
+         import { Transform_Legend } from "./utilities/legend/utils_legend.ts";
+         import { Peticion_Mith } from "./types/legend/Mith.ts";
+         import { Transform_Mith } from "./utilities/legend/utils_mith.ts";
 
 const handler = async (req: Request): Promise<Response> => {
 	const method = req.method;
@@ -137,7 +141,16 @@ const handler = async (req: Request): Promise<Response> => {
       //
     }
     else if(path.startsWith("/legends")){
-      //
+      const legends_db: LegendDB[] = await LegendsCollection.find().toArray();
+
+      const legends: Peticion_Legend[] = await Promise.all(legends_db.map(async (legend) => await Transform_Legend(legend, SongsCollection, AlbumsCollection)));
+
+      return new Response(
+        JSON.stringify(legends),
+        {
+          status: 200,
+        }
+      );
     }
     else if(path.startsWith("/legend/id")){
       //
@@ -146,7 +159,16 @@ const handler = async (req: Request): Promise<Response> => {
       //
     }
     else if(path.startsWith("/miths")){
-      //
+      const mith_db: LegendDB[] = await MithsCollection.find().toArray();
+
+      const miths: Peticion_Mith[] = await Promise.all(mith_db.map(async (mith) => await Transform_Mith(mith, SongsCollection, AlbumsCollection)));
+
+      return new Response(
+        JSON.stringify(miths),
+        {
+          status: 200,
+        }
+      );
     }
     else if(path.startsWith("/mith/id")){
       //
