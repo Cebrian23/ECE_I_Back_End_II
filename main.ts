@@ -844,7 +844,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-		else if(path === "/book/_id"){
+		else if(path === "/book/id"){
       const id = searchParams.get("id");
 
       if(!id){
