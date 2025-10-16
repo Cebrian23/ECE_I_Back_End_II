@@ -14,8 +14,8 @@ export const Transform_Event = async (Event: EventDB, SongCol: Collection<SongDB
                                       AlbCol: Collection<AlbumDB>, OrgCol: Collection<OrganizationDB>,
                                       PeoCol: Collection<PersonDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Event> => {
-    const songs_in: SongDB[] = await SongCol.find({_id: Event._id}).toArray();
-    const album_in: AlbumDB[] = await AlbCol.find({_id: Event._id}).toArray();
+    const songs_in: SongDB[] = await SongCol.find({talk_about: Event._id}).toArray();
+    const album_in: AlbumDB[] = await AlbCol.find({talk_about: Event._id}).toArray();
     const org_inv: OrganizationDB[] = await OrgCol.find({_id: {$in: Event.organizations_involved}}).toArray();
     const peo_inv: PersonDB[] = await PeoCol.find({_id: {$in: Event.people_involved}}).toArray();
 

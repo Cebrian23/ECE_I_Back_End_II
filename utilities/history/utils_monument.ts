@@ -9,8 +9,8 @@ import { BandDB } from "../../types/music/Band.ts";
 export const Transform_Monument = async (Monument: MonumentDB, SongCol: Collection<SongDB>,
                                          AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Monument> => {
-    const songs_in: SongDB[] = await SongCol.find({_id: Monument._id}).toArray();
-    const album_in: AlbumDB[] = await AlbCol.find({_id: Monument._id}).toArray();
+    const songs_in: SongDB[] = await SongCol.find({talk_about: Monument._id}).toArray();
+    const album_in: AlbumDB[] = await AlbCol.find({talk_about: Monument._id}).toArray();
 
     return{
         id: Monument._id!.toString(),

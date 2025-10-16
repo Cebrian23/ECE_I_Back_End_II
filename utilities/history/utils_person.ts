@@ -14,10 +14,13 @@ export const Transform_Person = async (Person: PersonDB, SongCol: Collection<Son
                                        AlbCol: Collection<AlbumDB>, EveCol: Collection<EventDB>,
                                        OrgCol: Collection<OrganizationDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Person> => {
-    const songs_in: SongDB[] = await SongCol.find({_id: Person._id}).toArray();
-    const album_in: AlbumDB[] = await AlbCol.find({_id: Person._id}).toArray();
+    const songs_in: SongDB[] = await SongCol.find({talk_about: Person._id}).toArray();
+    const album_in: AlbumDB[] = await AlbCol.find({talk_about: Person._id}).toArray();
     const member_of: OrganizationDB[] = await OrgCol.find({distinguished_members: Person._id}).toArray();
     const involved_in: EventDB[] = await EveCol.find({people_involved: Person._id}).toArray();
+
+    console.log(songs_in);
+    console.log(album_in);
 
     return{
         id: Person._id!.toString(),

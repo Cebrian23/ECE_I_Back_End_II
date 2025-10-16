@@ -9,8 +9,8 @@ import { BandDB } from "../../types/music/Band.ts";
 export const Transform_Heraldry = async (Heraldry: HeraldryDB, SongCol: Collection<SongDB>,
                                          AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Heraldry> => {
-    const songs_in: SongDB[] = await SongCol.find({_id: Heraldry._id}).toArray();
-    const album_in: AlbumDB[] = await AlbCol.find({_id: Heraldry._id}).toArray();
+    const songs_in: SongDB[] = await SongCol.find({talk_about: Heraldry._id}).toArray();
+    const album_in: AlbumDB[] = await AlbCol.find({talk_about: Heraldry._id}).toArray();
 
     return{
         id: Heraldry._id!.toString(),

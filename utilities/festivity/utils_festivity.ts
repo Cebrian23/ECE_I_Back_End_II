@@ -9,8 +9,8 @@ import { BandDB } from "../../types/music/Band.ts";
 export const Transform_Festivity = async (Festivity: FestivityDB, SongCol: Collection<SongDB>,
                                           AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Festivity> => {
-    const songs_in: SongDB[] = await SongCol.find({_id: Festivity._id}).toArray();
-    const album_in: AlbumDB[] = await AlbCol.find({_id: Festivity._id}).toArray();
+    const songs_in: SongDB[] = await SongCol.find({talk_about: Festivity._id}).toArray();
+    const album_in: AlbumDB[] = await AlbCol.find({talk_about: Festivity._id}).toArray();
 
     return{
         id: Festivity._id!.toString(),

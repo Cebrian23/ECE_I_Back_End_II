@@ -16,8 +16,8 @@ export const Transform_Book = async (Book: BookDB, WriCol: Collection<WriterDB>,
         throw new Error(`No se ha encontrado escritor para el libro "${Book.title}"`);
     }
 
-    const songs_in: SongDB[] = await SongCol.find({_id: Book._id}).toArray();
-    const album_in: AlbumDB[] = await AlbCol.find({_id: Book._id}).toArray();
+    const songs_in: SongDB[] = await SongCol.find({talk_about: Book._id}).toArray();
+    const album_in: AlbumDB[] = await AlbCol.find({talk_about: Book._id}).toArray();
 
     return{
         id: Book._id!.toString(),
