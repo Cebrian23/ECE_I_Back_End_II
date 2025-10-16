@@ -48,6 +48,5 @@ export type Person_Short = {
     id: string,
     name: string,
     surname?: string,
-    nickname?: string[],
-    image?: string,
+    country_from: string,
 }
