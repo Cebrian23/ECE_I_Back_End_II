@@ -59,7 +59,12 @@ const handler = async (req: Request): Promise<Response> => {
 
       const album_db = await AlbumsCollection.findOne({_id: new ObjectId(id)});
 
-      const album = await Transform_Album(album_db!, BandsCollection, AlbumsCollection, SongsCollection);
+      const album = await Transform_Album(album_db!, BandsCollection, AlbumsCollection,
+                                          SongsCollection, FestivitiesCollection,
+                                          EventsCollection, HeraldriesCollection,
+                                          MonumentsCollection, OrganizationsCollection,
+                                          PeopleCollection, LegendsCollection,
+                                          MithsCollection, BooksCollection, WritersCollection);
 
       return new Response(
         JSON.stringify(album),
@@ -77,7 +82,13 @@ const handler = async (req: Request): Promise<Response> => {
 
       const song_db = await SongsCollection.findOne({_id: new ObjectId(id)});
 
-      const song = await Transform_Song(song_db!, AlbumsCollection, BandsCollection);
+      const song = await Transform_Song(song_db!, AlbumsCollection,
+                                        BandsCollection, FestivitiesCollection,
+                                        EventsCollection, HeraldriesCollection,
+                                        MonumentsCollection, OrganizationsCollection,
+                                        PeopleCollection, LegendsCollection,
+                                        MithsCollection, BooksCollection, WritersCollection
+      );
 
       return new Response(
         JSON.stringify(song),
