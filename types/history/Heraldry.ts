@@ -20,3 +20,8 @@ export type Peticion_Heraldry = {
     talked_about_in_song: Song_Short[],
     talked_about_in_album: Album_Short[],
 }
+
+export type Heraldry_Short = {
+    id: string,
+    name: string,
+}
