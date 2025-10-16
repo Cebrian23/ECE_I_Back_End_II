@@ -19,5 +19,7 @@ export const Short_writer = (Writer: WriterDB): Writer_Short => {
     return{
         id: Writer._id!.toString(),
         name: Writer.name,
+        surname: Writer.surname,
+        image: Writer.image,
     }
 }
