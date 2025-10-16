@@ -38,4 +38,5 @@ export type Album_Short = {
     name: string,
     year_of_publish: number,
     cover?: string,
+    creator: Band_Short,
 }
