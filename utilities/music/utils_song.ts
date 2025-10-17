@@ -53,7 +53,7 @@ export const Short_song = async (Song: SongDB, AlbCol: Collection<AlbumDB>, Band
             id: Song._id!.toString(),
             name: Song.name,
             cover: album.cover,
-            creator: await Short_album(album, BandCol),
+            album_in: await Short_album(album, BandCol),
         }
     }
 }
