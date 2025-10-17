@@ -16,7 +16,7 @@ export const Transform_Festivity = async (Festivity: FestivityDB, SongCol: Colle
         id: Festivity._id!.toString(),
         name: Festivity.name,
         date: Festivity.date,
-        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol))),
+        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talked_about_in_album: await Promise.all(album_in.map(async (album) => await Short_album(album, BandCol))),
     }
 }

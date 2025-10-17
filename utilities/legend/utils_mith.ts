@@ -15,7 +15,7 @@ export const Transform_Mith = async (Mith: MithDB, SongCol: Collection<SongDB>,
     return{
         id: Mith._id!.toString(),
         name: Mith.name,
-        talked_about_in_song: await Promise.all(song_db.map(async (song) => await Short_song(song, AlbCol))),
+        talked_about_in_song: await Promise.all(song_db.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talked_about_in_album: await Promise.all(album_db.map(async (album) => await Short_album(album, BandCol))),
     }
 }

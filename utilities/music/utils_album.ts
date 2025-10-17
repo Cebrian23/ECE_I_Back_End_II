@@ -34,12 +34,12 @@ export const Transform_Album = async (Album: AlbumDB, BandCol: Collection<BandDB
     return{
         id: Album._id!.toString(),
         name: Album.name,
+        creator: Short_band(creator),
         year_of_publish: Album.year_of_publish,
         cover: Album.cover,
-        songs: await Promise.all(songs.map(async (song) => await Short_song(song, AlbCol))),
+        songs: await Promise.all(songs.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talk_about: await Topics(Album, FesCol, EveCol, HerCol, MonCol, OrgCol, PeoCol, LegCol, MithCol, BookCol, WriCol),
         conceptual_album: Album.conceptual_album,
-        creator: Short_band(creator),
     }
 }
 

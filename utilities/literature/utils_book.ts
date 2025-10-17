@@ -26,7 +26,7 @@ export const Transform_Book = async (Book: BookDB, WriCol: Collection<WriterDB>,
         year_of_publish: Book.year_of_publish,
         description: Book.description,
         writer: Short_writer(writer),
-        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol))),
+        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talked_about_in_album: await Promise.all(album_in.map(async (album) => await Short_album(album, BandCol))),
     }
 }

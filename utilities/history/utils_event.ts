@@ -26,7 +26,7 @@ export const Transform_Event = async (Event: EventDB, SongCol: Collection<SongDB
         end_date: Event.end_date,
         people_involved: peo_inv.map((peo) => Short_person(peo)),
         organizations_involved: org_inv.map((org) => Short_organization(org)),
-        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol))),
+        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talked_about_in_album: await Promise.all(album_in.map(async (album) => await Short_album(album, BandCol))),
     }
 }

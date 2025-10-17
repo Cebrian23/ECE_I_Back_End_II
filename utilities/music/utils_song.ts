@@ -32,12 +32,13 @@ export const Transform_Song = async (Song: SongDB, AlbCol: Collection<AlbumDB>, 
         id: Song._id!.toString(),
         name: Song.name,
         talk_about: await Topics(Song, FesCol, EveCol, HerCol, MonCol, OrgCol, PeoCol, LegCol, MithCol, BookCol, WriCol),
+        cover: album.cover,
         official_video: Song.official_video,
         album_in: await Short_album(album, BandCol),
     }
 }
 
-export const Short_song = async (Song: SongDB, AlbCol: Collection<AlbumDB>): Promise<Song_Short> => {
+export const Short_song = async (Song: SongDB, AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>): Promise<Song_Short> => {
     const album: AlbumDB | null = await AlbCol.findOne({songs: Song._id});
 
     if(!album){
@@ -51,7 +52,8 @@ export const Short_song = async (Song: SongDB, AlbCol: Collection<AlbumDB>): Pro
         return{
             id: Song._id!.toString(),
             name: Song.name,
-            cover: album.cover
+            cover: album.cover,
+            creator: await Short_album(album, BandCol),
         }
     }
 }

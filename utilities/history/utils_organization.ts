@@ -27,7 +27,7 @@ export const Transform_Organization = async (Organization: OrganizationDB, SongC
         dissolution: Organization.dissolution,
         distinguished_members: people_in.map((person) => Short_person(person)),
         involved_in: involved_in.map((event) => Short_event(event)),
-        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol))),
+        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talked_about_in_album: await Promise.all(album_in.map(async (album) => await Short_album(album, BandCol))),
     }
 }

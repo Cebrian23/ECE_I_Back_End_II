@@ -19,7 +19,7 @@ export const Transform_Monument = async (Monument: MonumentDB, SongCol: Collecti
         destruction: Monument.destruction,
         still_exists: Monument.still_exists,
         country_in: Monument.country_in,
-        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol))),
+        talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talked_about_in_album: await Promise.all(album_in.map(async (album) => await Short_album(album, BandCol))),
     }
 }
