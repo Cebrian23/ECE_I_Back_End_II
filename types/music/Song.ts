@@ -28,4 +28,5 @@ export type Song_Short = {
     id: string,
     name: string,
     cover?: string,
+    creator?: Album_Short,
 }
