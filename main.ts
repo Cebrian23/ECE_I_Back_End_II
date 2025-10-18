@@ -24,6 +24,7 @@ import { MonumentDB, Peticion_Monument } from "./types/history/Monument.ts";
 import { Transform_Monument } from "./utilities/history/utils_monument.ts";
 import { Transform_Festivity } from "./utilities/festivity/utils_festivity.ts";
 import { FestivityDB } from "./types/festivity/Festivity.ts";
+import { Transform_Writer } from "./utilities/literature/utils_writer.ts";
 
 const handler = async (req: Request): Promise<Response> => {
 	const method = req.method;
@@ -830,6 +831,17 @@ const handler = async (req: Request): Promise<Response> => {
       if(!id){
         throw new Error("No se ha encontrado el id");
       }
+
+      const writer_db = await WritersCollection.findOne({_id: new ObjectId(id)});
+
+      const writer = await Transform_Writer(writer_db!, BooksCollection, WritersCollection);
+
+      return new Response(
+        JSON.stringify(writer),
+        {
+          status: 200,
+        }
+      );
     }
 		else if(path === "/books"){
       const books_db: BookDB[] = await BooksCollection.find().toArray();
