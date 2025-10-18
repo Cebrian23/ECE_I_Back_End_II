@@ -233,10 +233,10 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
     else if(path === "/events/double_date"){
-      const year_a = searchParams.get("year");
-      const ac_dc_a= searchParams.get("ac_dc");
-      const year_b = searchParams.get("year");
-      const ac_dc_b= searchParams.get("ac_dc");
+      const year_a = searchParams.get("year_a");
+      const ac_dc_a= searchParams.get("ac_dc_1");
+      const year_b = searchParams.get("year_b");
+      const ac_dc_b= searchParams.get("ac_dc_2");
 
       if(!year_a || !ac_dc_a || !year_b || !ac_dc_b){
         throw new Error("No se ha encontrado el año de inicio y fin");
@@ -555,10 +555,10 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
     else if(path === "/organizations/double_date"){
-      const year_a = searchParams.get("year");
-      const ac_dc_a= searchParams.get("ac_dc");
-      const year_b = searchParams.get("year");
-      const ac_dc_b= searchParams.get("ac_dc");
+      const year_a = searchParams.get("year_a");
+      const ac_dc_a= searchParams.get("ac_dc_1");
+      const year_b = searchParams.get("year_b");
+      const ac_dc_b= searchParams.get("ac_dc_2");
 
       if(!year_a || !ac_dc_a || !year_b || !ac_dc_b){
         throw new Error("No se ha encontrado el año de creación y disolución");
@@ -762,10 +762,10 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
     else if(path === "/people/double_date"){
-      const year_a = searchParams.get("year");
-      const ac_dc_a= searchParams.get("ac_dc");
-      const year_b = searchParams.get("year");
-      const ac_dc_b= searchParams.get("ac_dc");
+      const year_a = searchParams.get("year_a");
+      const ac_dc_a= searchParams.get("ac_dc_1");
+      const year_b = searchParams.get("year_b");
+      const ac_dc_b= searchParams.get("ac_dc_2");
 
       if(!year_a || !ac_dc_a || !year_b || !ac_dc_b){
         throw new Error("No se ha encontrado el año de nacimiento y fallecimiento");
@@ -949,8 +949,8 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
     else if(path === "/books/double_date"){
-      const year_a = searchParams.get("year");
-      const year_b = searchParams.get("year");
+      const year_a = searchParams.get("year_a");
+      const year_b = searchParams.get("year_b");
 
       if(!year_a || !year_b){
         throw new Error("No se ha encontrado el año de inicio y fin");
