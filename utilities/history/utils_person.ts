@@ -19,9 +19,6 @@ export const Transform_Person = async (Person: PersonDB, SongCol: Collection<Son
     const member_of: OrganizationDB[] = await OrgCol.find({distinguished_members: Person._id}).toArray();
     const involved_in: EventDB[] = await EveCol.find({people_involved: Person._id}).toArray();
 
-    console.log(songs_in);
-    console.log(album_in);
-
     return{
         id: Person._id!.toString(),
         name: Person.name,
