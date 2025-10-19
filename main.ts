@@ -607,6 +607,14 @@ const handler = async (req: Request): Promise<Response> => {
         }
       });
 
+      org_selection_1.forEach((org_1) => {
+        org_selection_2.forEach((org_2) => {
+          if(org_1._id !== org_2._id){
+            org_sel_final.push(org_1);
+          }
+        });
+      });
+
       const organizations: Peticion_Organization[] = await Promise.all(org_sel_final.map(async (org) => await Transform_Organization(org, SongsCollection,
                                                                                                                                      AlbumsCollection, EventsCollection,
                                                                                                                                      PeopleCollection, BandsCollection)));
@@ -812,6 +820,14 @@ const handler = async (req: Request): Promise<Response> => {
             }
           }
         }
+      });
+
+      peo_selection_1.forEach((peo_1) => {
+        peo_selection_2.forEach((peo_2) => {
+          if(peo_1._id === peo_2._id){
+            peo_sel_final.push(peo_1);
+          }
+        });
       });
 
       const people: Peticion_Person[] = await Promise.all(peo_sel_final.map(async (person) => await Transform_Person(person, SongsCollection,
