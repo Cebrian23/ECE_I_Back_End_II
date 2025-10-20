@@ -121,7 +121,7 @@ const handler = async (req: Request): Promise<Response> => {
 
       const event_db = await EventsCollection.findOne({_id: new ObjectId(id)});
 
-      const event = Transform_Event(event_db!, SongsCollection, AlbumsCollection, OrganizationsCollection, PeopleCollection, BandsCollection);
+      const event = await Transform_Event(event_db!, SongsCollection, AlbumsCollection, OrganizationsCollection, PeopleCollection, BandsCollection);
 
       return new Response(
         JSON.stringify(event),
