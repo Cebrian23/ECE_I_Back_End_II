@@ -17,7 +17,7 @@ export type Date_yymmdd = {
 
 export type Date_century = {
     century: string,
-    ac_dc: "a.C" | "d.c",
+    ac_dc: "a.C" | "d.C",
 }
 
 export type Date_yymmdd_monument = {

@@ -6,6 +6,8 @@ export type SongDB = OptionalId<{
     name: string,
     talk_about: ObjectId[],
     official_video?: string,
+    official_lyric_video?: string,
+    official_cd_video?: string,
 }>
 
 export type Song = {
@@ -13,6 +15,8 @@ export type Song = {
     name: string,
     talk_about: Topics,
     official_video?: string,
+    official_lyric_video?: string,
+    official_cd_video?: string,
 }
 
 export type Peticion_Song = {
@@ -21,6 +25,8 @@ export type Peticion_Song = {
     cover?: string,
     talk_about: Topics_Short,
     official_video?: string,
+    official_lyric_video?: string,
+    official_cd_video?: string,
     album_in: Album_Short,
 }
 
