@@ -10,6 +10,16 @@ import { Short_organization } from "./utils_organization.ts";
 import { Short_event } from "./utils_event.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma una persona almacenada en la base de datos y devuelve todos sus datos
+ * @param Person Es la persona que se va a transformar
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @param OrgCol Es la colección de organizaciones
+ * @param EveCol Es la colección de eventos
+ * @returns Devuelve la persona transformada
+ */
 export const Transform_Person = async (Person: PersonDB, SongCol: Collection<SongDB>,
                                        AlbCol: Collection<AlbumDB>, EveCol: Collection<EventDB>,
                                        OrgCol: Collection<OrganizationDB>, BandCol: Collection<BandDB>
@@ -36,6 +46,11 @@ export const Transform_Person = async (Person: PersonDB, SongCol: Collection<Son
     }
 }
 
+/**
+ * Función que transforma una persona almacenada en la base de datos y devuelve una versión reducida de sus datos
+ * @param Person Es la persona que se va a transformar
+ * @returns Devuelve la versión reducida de la persona
+ */
 export const Short_person = (Person: PersonDB): Person_Short => {
     return{
         id: Person._id!.toString(),

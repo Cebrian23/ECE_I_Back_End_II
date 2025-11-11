@@ -8,6 +8,15 @@ import { Short_album } from "../music/utils_album.ts";
 import { Short_song } from "../music/utils_song.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma un libro almacenado en la base de datos y devuelve todos sus datos
+ * @param Book Es el libro que se vav a transformar
+ * @param WriCol Es la colección de escritores
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @returns Devuelve el libro transformado
+ */
 export const Transform_Book = async (Book: BookDB, WriCol: Collection<WriterDB>, SongCol: Collection<SongDB>,
                                      AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>): Promise<Peticion_Book> => {
     const writer: WriterDB | null = await WriCol.findOne({books: Book._id});
@@ -31,6 +40,12 @@ export const Transform_Book = async (Book: BookDB, WriCol: Collection<WriterDB>,
     }
 }
 
+/**
+ * Función que transforma un libro almacenado en la base de datos y devuelve una versión reducida de sus datos
+ * @param Book Es el libro que se vav a transformar
+ * @param WriCol Es la colección de libros
+ * @returns Devuelve la versión reducida del libro
+ */
 export const Short_book = async (Book: BookDB, WriCol: Collection<WriterDB>): Promise<Book_Short> => {
     const writer: WriterDB | null = await WriCol.findOne({books: Book._id});
 

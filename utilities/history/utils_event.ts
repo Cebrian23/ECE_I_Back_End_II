@@ -10,6 +10,16 @@ import { Short_organization } from "./utils_organization.ts";
 import { Short_person } from "./utils_person.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma un evento almacenado en la base de datos y devuelve todos sus datos
+ * @param Event Es el evento que se va a transformar
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @param OrgCol Es la colección de organizaciones
+ * @param PeoCol Es la colección de personas
+ * @returns Devuelve el evento transformado
+ */
 export const Transform_Event = async (Event: EventDB, SongCol: Collection<SongDB>,
                                       AlbCol: Collection<AlbumDB>, OrgCol: Collection<OrganizationDB>,
                                       PeoCol: Collection<PersonDB>, BandCol: Collection<BandDB>
@@ -31,6 +41,11 @@ export const Transform_Event = async (Event: EventDB, SongCol: Collection<SongDB
     }
 }
 
+/**
+ * Función que transforma un evento almacenado en la base de datos y devuelve una versión reducida de sus datos
+ * @param Event Es el evento que se va a transformar
+ * @returns Devuelve la versión reducida del evento
+ */
 export const Short_event = (Event: EventDB): Event_Short => {
     return{
         id: Event._id!.toString(),

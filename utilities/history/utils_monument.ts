@@ -6,6 +6,14 @@ import { Short_album } from "../music/utils_album.ts";
 import { Short_song } from "../music/utils_song.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma un monumento almacenado en la base de datos y devuelve todos sus datos
+ * @param Monument Es el monumento que se va a transformar
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @returns Devuelve el monumento transformado
+ */
 export const Transform_Monument = async (Monument: MonumentDB, SongCol: Collection<SongDB>,
                                          AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Monument> => {
@@ -24,6 +32,11 @@ export const Transform_Monument = async (Monument: MonumentDB, SongCol: Collecti
     }
 }
 
+/**
+ * Función que transforma un monumento almacenado en la base de datos y devuelve una versión reducida de sus datos
+ * @param Monument Es el monumento que se va a transformar
+ * @returns Devuelve la versión reducida del monumento
+ */
 export const Short_monument = (Monument: MonumentDB): Monument_Short => {
     return{
         id: Monument._id!.toString(),

@@ -6,6 +6,14 @@ import { Short_song } from "../music/utils_song.ts";
 import { Short_album } from "../music/utils_album.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma una leyenda almacenada en la base de datos y devuelve todos sus datos
+ * @param Legend Es la leyenda que se va a transformar
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @returns Devuelve la leyenda transformada
+ */
 export const Transform_Legend = async (Legend: LegendDB, SongCol: Collection<SongDB>,
                                        AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Legend> => {
@@ -20,6 +28,11 @@ export const Transform_Legend = async (Legend: LegendDB, SongCol: Collection<Son
     }
 }
 
+/**
+ * Función que transforma una leyenda almacenada en la base de datos y devuelve una versión reducida de sus datos
+ * @param Legend Es la leyenda que se va a transformar
+ * @returns Devuelve la versión reducida de la leyenda
+ */
 export const LegendDBToLegend = (Legend: LegendDB): Legend => {
     return{
         id: Legend._id!.toString(),

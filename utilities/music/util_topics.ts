@@ -22,6 +22,21 @@ import { MithDBToMith } from "../legend/utils_mith.ts";
 import { Short_book } from "../literature/utils_book.ts";
 import { WriterDB } from "../../types/literature/Writer.ts";
 
+/**
+ * Función para extraer los temas de los que hablan las canciones y los álbumes
+ * @param Topic Es la canción o álbum del que hay que extraer los temas de los que hablan
+ * @param FesCol Es la colección de festividades
+ * @param EveCol Es la colección de eventos
+ * @param HerCol Es la colección de heráldicas
+ * @param MonCol Es la colección de monumentos
+ * @param OrgCol Es la colección de organizaciones
+ * @param PeoCol Es la colección de personas
+ * @param LegCol Es la colección de leyendas
+ * @param MithCol Es la colección de mitos
+ * @param BookCol Es la colección de libros
+ * @param WriCol Es la colección de escritores
+ * @returns Devuelve los temas que abordan las canciones y los álbumes
+ */
 export const Topics = async (Topic: SongDB | AlbumDB, FesCol: Collection<FestivityDB>,
                              EveCol: Collection<EventDB>, HerCol: Collection<HeraldryDB>,
                              MonCol: Collection<MonumentDB>, OrgCol: Collection<OrganizationDB>,

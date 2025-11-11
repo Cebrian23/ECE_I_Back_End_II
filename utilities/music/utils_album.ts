@@ -16,6 +16,24 @@ import { MithDB } from "../../types/legend/Mith.ts";
 import { BookDB } from "../../types/literature/Book.ts";
 import { WriterDB } from "../../types/literature/Writer.ts";
 
+/**
+ * Función que transforma un álbum almacenado en la base de datos y devuelve todos sus datos
+ * @param Album Es el álbum que se va a transformar
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @param SongCol Es la colección de canciones
+ * @param FesCol Es la colección de festividades
+ * @param EveCol Es la colección de eventos
+ * @param HerCol Es la colección de heráldicas
+ * @param MonCol Es la colección de monumentos
+ * @param OrgCol Es la colección de organizaciones
+ * @param PeoCol Es la colección de personas
+ * @param LegCol Es la colección de leyendas
+ * @param MithCol Es la colección de mitos
+ * @param BookCol Es la colección de libros
+ * @param WriCol Es la colección de escritores
+ * @returns Devuelve el álbum transformado
+ */
 export const Transform_Album = async (Album: AlbumDB, BandCol: Collection<BandDB>,
                                       AlbCol: Collection<AlbumDB>, SongCol: Collection<SongDB>,
                                       FesCol: Collection<FestivityDB>, EveCol: Collection<EventDB>,
@@ -43,11 +61,17 @@ export const Transform_Album = async (Album: AlbumDB, BandCol: Collection<BandDB
     }
 }
 
+/**
+ * Función que transforma un álbum almacenada en la base de datos y devuelve una versión reducida de sus datos
+ * @param Album Es el álbum que se va a transformar
+ * @param BandCol Es la colección de bandas
+ * @returns Devuelve la versión reducida del álbum
+ */
 export const Short_album = async (Album: AlbumDB, BandCol: Collection<BandDB>): Promise<Album_Short> => {
     const creator: BandDB | null = await BandCol.findOne({albums: Album._id});
 
     if(!creator){
-        throw new Error(`No se ha encontrado banda creadora para el album "${Album.name}"`);
+        throw new Error(`No se ha encontrado banda creadora para el álbum "${Album.name}"`);
     }
 
     return{

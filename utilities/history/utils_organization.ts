@@ -10,6 +10,16 @@ import { Short_person } from "./utils_person.ts";
 import { Short_event } from "./utils_event.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma una organización almacenada en la base de datos y devuelve todos sus datos
+ * @param Organization Es la organización que se va a transformar
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @param EveCol Es la colección de eventos
+ * @param PeoCol Es la colección de personas
+ * @returns Devuelve la organización transformada
+ */
 export const Transform_Organization = async (Organization: OrganizationDB, SongCol: Collection<SongDB>,
                                              AlbCol: Collection<AlbumDB>, EveCol: Collection<EventDB>,
                                              PeoCol: Collection<PersonDB>, BandCol: Collection<BandDB>
@@ -32,6 +42,11 @@ export const Transform_Organization = async (Organization: OrganizationDB, SongC
     }
 }
 
+/**
+ * Función que transforma una organización almacenada en la base de datos y devuelve una versión reducida de sus datos
+ * @param Organization Es la organización que se va a transformar
+ * @returns Devuelve la versión reducida de la organización
+ */
 export const Short_organization = (Organization: OrganizationDB): Organization_Short => {
     return{
         id: Organization._id!.toString(),

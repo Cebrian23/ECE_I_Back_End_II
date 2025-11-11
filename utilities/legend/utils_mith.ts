@@ -6,6 +6,14 @@ import { Short_album } from "../music/utils_album.ts";
 import { Short_song } from "../music/utils_song.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma un mito almacenado en la base de datos y devuelve todos sus datos
+ * @param Mith Es el mito que se va a transformar
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @returns Devuelve el mito transformado
+ */
 export const Transform_Mith = async (Mith: MithDB, SongCol: Collection<SongDB>,
                                      AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Mith> => {
@@ -20,6 +28,11 @@ export const Transform_Mith = async (Mith: MithDB, SongCol: Collection<SongDB>,
     }
 }
 
+/**
+ * Función que transforma un mito almacenado en la base de datos y devuelve una versión reducida de sus datos
+ * @param Mith Es el mito que se va a transformar
+ * @returns Devuelve la versión reducida del mito
+ */
 export const MithDBToMith = (Mith: MithDB): Mith => {
     return{
         id: Mith._id!.toString(),

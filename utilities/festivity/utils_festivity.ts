@@ -6,6 +6,14 @@ import { Short_song } from "../music/utils_song.ts";
 import { Short_album } from "../music/utils_album.ts";
 import { BandDB } from "../../types/music/Band.ts";
 
+/**
+ * Función que transforma una festividad almacenada en la base de datos y devuelve todos sus datos
+ * @param Festivity Es la festividad que se va a transformar
+ * @param SongCol Es la colección de canciones
+ * @param AlbCol Es la colección de álbumes
+ * @param BandCol Es la colección de bandas
+ * @returns Devuelve la festividad transformada
+ */
 export const Transform_Festivity = async (Festivity: FestivityDB, SongCol: Collection<SongDB>,
                                           AlbCol: Collection<AlbumDB>, BandCol: Collection<BandDB>
 ): Promise<Peticion_Festivity> => {
@@ -21,6 +29,11 @@ export const Transform_Festivity = async (Festivity: FestivityDB, SongCol: Colle
     }
 }
 
+/**
+ * Función que transforma una festividad almacenada en la base de datos y devuelve una versión reducida de sus datos
+ * @param Festivity Es la festividad que se va a transformar
+ * @returns Devuelve la versión reducida de la festividad
+ */
 export const FestivityDBToFestivity = (Festivity: FestivityDB) => {
     return{
         id: Festivity._id!.toString(),
