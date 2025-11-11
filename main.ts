@@ -25,6 +25,7 @@ import { Transform_Monument } from "./utilities/history/utils_monument.ts";
 import { Transform_Festivity } from "./utilities/festivity/utils_festivity.ts";
 import { FestivityDB } from "./types/festivity/Festivity.ts";
 import { Transform_Writer } from "./utilities/literature/utils_writer.ts";
+import { Limit_Date_Filter } from "./utilities/history/utils_date.ts";
 
 const handler = async (req: Request): Promise<Response> => {
 	const method = req.method;
@@ -150,7 +151,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/events/start_date"){
+    else if(path === "/events/start_date_limit"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -164,18 +165,68 @@ const handler = async (req: Request): Promise<Response> => {
       events_db.forEach((event) => {
         const date = event.start_date?.normal_date;
         if(date !== undefined){
-          if(ac_dc === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year <= Number(year))){
-              eve_selection.push(event);
-            }
-            else if(date.ac_dc === "d.C"){
-              eve_selection.push(event);
-            }
+          if(Limit_Date_Filter(date, Number(year), ac_dc, "Start")){
+            eve_selection.push(event);
           }
-          else if(ac_dc === "d.C"){
-            if((date.ac_dc === "d.C") && (date.year >= Number(year))){
-              eve_selection.push(event);
-            }
+        }
+      });
+
+      const events: Peticion_Event[] = await Promise.all(eve_selection.map(async (event) => await Transform_Event(event, SongsCollection,
+                                                                                                                  AlbumsCollection, EventsCollection,
+                                                                                                                  PeopleCollection, BandsCollection)));
+      
+      return new Response(
+        JSON.stringify(events),
+        {
+          status: 200,
+        }
+      );
+    }
+    else if(path === "/events/start_date"){
+      const year = searchParams.get("year");
+      const ac_dc = searchParams.get("ac_dc");
+
+      if(!year && !ac_dc){
+        throw new Error("No se ha encontrado el año de inicio");
+      }
+
+      const events_db: EventDB[] = await EventsCollection.find().toArray();
+      const eve_selection: EventDB[] = [];
+
+      events_db.forEach((event) => {
+        const normal_date = event.start_date?.normal_date;
+        if((normal_date !== undefined && normal_date !== null) && (normal_date.year === Number(year)) && (normal_date.ac_dc === ac_dc)){
+          eve_selection.push(event);
+        }
+      });
+
+      const events: Peticion_Event[] = await Promise.all(eve_selection.map(async (event) => await Transform_Event(event, SongsCollection,
+                                                                                                                  AlbumsCollection, EventsCollection,
+                                                                                                                  PeopleCollection, BandsCollection)));
+
+      return new Response(
+        JSON.stringify(events),
+        {
+          status: 200,
+        }
+      );
+    }
+    else if(path === "/events/end_date_limit"){
+      const year = searchParams.get("year");
+      const ac_dc = searchParams.get("ac_dc");
+
+      if(!year || !ac_dc){
+        throw new Error("No se ha encontrado el año de fin");
+      }
+
+      const events_db: EventDB[] = await EventsCollection.find().toArray();
+      const eve_selection: EventDB[] = [];
+
+      events_db.forEach((event) => {
+        const date = event.end_date?.normal_date;
+        if(date !== undefined){
+          if(Limit_Date_Filter(date, Number(year), ac_dc, "End")){
+            eve_selection.push(event);
           }
         }
       });
@@ -195,7 +246,7 @@ const handler = async (req: Request): Promise<Response> => {
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
-      if(!year || !ac_dc){
+      if(!year && !ac_dc){
         throw new Error("No se ha encontrado el año de fin");
       }
 
@@ -203,28 +254,16 @@ const handler = async (req: Request): Promise<Response> => {
       const eve_selection: EventDB[] = [];
 
       events_db.forEach((event) => {
-        const date = event.end_date?.normal_date;
-        if(date !== undefined){
-          if(ac_dc === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year >= Number(year))){
-              eve_selection.push(event);
-            }
-          }
-          else if(ac_dc === "d.C"){
-            if(date.ac_dc === "a.C"){
-              eve_selection.push(event);
-            }
-            else if((date.ac_dc === "d.C") && (date.year <= Number(year))){
-              eve_selection.push(event);
-            }
-          }
+        const normal_date = event.end_date?.normal_date;
+        if((normal_date !== undefined && normal_date !== null) && (normal_date.year === Number(year)) && (normal_date.ac_dc === ac_dc)){
+          eve_selection.push(event);
         }
       });
 
       const events: Peticion_Event[] = await Promise.all(eve_selection.map(async (event) => await Transform_Event(event, SongsCollection,
                                                                                                                   AlbumsCollection, EventsCollection,
                                                                                                                   PeopleCollection, BandsCollection)));
-      
+
       return new Response(
         JSON.stringify(events),
         {
@@ -234,9 +273,9 @@ const handler = async (req: Request): Promise<Response> => {
     }
     else if(path === "/events/double_date"){
       const year_a = searchParams.get("year_a");
-      const ac_dc_a= searchParams.get("ac_dc_1");
+      const ac_dc_a = searchParams.get("ac_dc_1");
       const year_b = searchParams.get("year_b");
-      const ac_dc_b= searchParams.get("ac_dc_2");
+      const ac_dc_b = searchParams.get("ac_dc_2");
 
       if(!year_a || !ac_dc_a || !year_b || !ac_dc_b){
         throw new Error("No se ha encontrado el año de inicio y fin");
@@ -250,18 +289,8 @@ const handler = async (req: Request): Promise<Response> => {
       events_db.forEach((event) => {
         const date = event.start_date?.normal_date;
         if(date !== undefined){
-          if(ac_dc_a === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year <= Number(year_a))){
-              eve_selection_1.push(event);
-            }
-            else if(date.ac_dc === "d.C"){
-              eve_selection_1.push(event);
-            }
-          }
-          else if(ac_dc_a === "d.C"){
-            if((date.ac_dc === "d.C") && (date.year >= Number(year_a))){
-              eve_selection_1.push(event);
-            }
+          if(Limit_Date_Filter(date, Number(year_a), ac_dc_a, "Start")){
+            eve_selection_1.push(event);
           }
         }
       });
@@ -269,18 +298,8 @@ const handler = async (req: Request): Promise<Response> => {
       events_db.forEach((event) => {
         const date = event.end_date?.normal_date;
         if(date !== undefined){
-          if(ac_dc_b === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year >= Number(year_b))){
-              eve_selection_2.push(event);
-            }
-          }
-          else if(ac_dc_b === "d.C"){
-            if(date.ac_dc === "a.C"){
-              eve_selection_2.push(event);
-            }
-            else if((date.ac_dc === "d.C") && (date.year <= Number(year_b))){
-              eve_selection_2.push(event);
-            }
+          if(Limit_Date_Filter(date, Number(year_b), ac_dc_b, "End")){
+            eve_selection_2.push(event);
           }
         }
       });
@@ -472,7 +491,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/organizations/creation_date"){
+    else if(path === "/organizations/creation_date_limit"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -486,18 +505,68 @@ const handler = async (req: Request): Promise<Response> => {
       organizations_db.forEach((organization) => {
         const date = organization.creation?.normal_date;
         if(date !== undefined){
-          if(ac_dc === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year <= Number(year))){
-              org_selection.push(organization);
-            }
-            else if(date.ac_dc === "d.C"){
-              org_selection.push(organization);
-            }
+          if(Limit_Date_Filter(date, Number(year), ac_dc, "Creation")){
+            org_selection.push(organization);
           }
-          else if(ac_dc === "d.C"){
-            if((date.ac_dc === "d.C") && (date.year >= Number(year))){
-              org_selection.push(organization);
-            }
+        }
+      });
+
+      const organizations: Peticion_Organization[] = await Promise.all(org_selection.map(async (org) => await Transform_Organization(org, SongsCollection,
+                                                                                                                                     AlbumsCollection, EventsCollection,
+                                                                                                                                     PeopleCollection, BandsCollection)));
+      
+      return new Response(
+        JSON.stringify(organizations),
+        {
+          status: 200,
+        }
+      );
+    }
+    else if(path === "/organizations/creation_date"){
+      const year = searchParams.get("year");
+      const ac_dc = searchParams.get("ac_dc");
+
+      if(!year && !ac_dc){
+        throw new Error("No se ha encontrado el año de creación");
+      }
+
+      const organizations_db: OrganizationDB[] = await OrganizationsCollection.find().toArray();
+      const org_selection: OrganizationDB[] = [];
+
+      organizations_db.forEach((org) => {
+        const normal_date = org.creation?.normal_date;
+        if((normal_date !== undefined && normal_date !== null) && (normal_date.year === Number(year)) && (normal_date.ac_dc === ac_dc)){
+          org_selection.push(org);
+        }
+      });
+
+      const organizations: Peticion_Organization[] = await Promise.all(org_selection.map(async (org) => await Transform_Organization(org, SongsCollection,
+                                                                                                                                     AlbumsCollection, EventsCollection,
+                                                                                                                                     PeopleCollection, BandsCollection)));
+
+      return new Response(
+        JSON.stringify(organizations),
+        {
+          status: 200,
+        }
+      );
+    }
+    else if(path === "/organizations/dissolution_date_limit"){
+      const year = searchParams.get("year");
+      const ac_dc = searchParams.get("ac_dc");
+
+      if(!year || !ac_dc){
+        throw new Error("No se ha encontrado el año de disolución");
+      }
+
+      const organizations_db: OrganizationDB[] = await OrganizationsCollection.find().toArray();
+      const org_selection: OrganizationDB[] = [];
+
+      organizations_db.forEach((organization) => {
+        const date = organization.dissolution?.normal_date;
+        if(date !== undefined){
+          if(Limit_Date_Filter(date, Number(year), ac_dc, "Dissolution")){
+            org_selection.push(organization);
           }
         }
       });
@@ -517,36 +586,24 @@ const handler = async (req: Request): Promise<Response> => {
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
-      if(!year || !ac_dc){
+      if(!year && !ac_dc){
         throw new Error("No se ha encontrado el año de disolución");
       }
 
       const organizations_db: OrganizationDB[] = await OrganizationsCollection.find().toArray();
       const org_selection: OrganizationDB[] = [];
 
-      organizations_db.forEach((organization) => {
-        const date = organization.dissolution?.normal_date;
-        if(date !== undefined){
-          if(ac_dc === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year >= Number(year))){
-              org_selection.push(organization);
-            }
-          }
-          else if(ac_dc === "d.C"){
-            if(date.ac_dc === "a.C"){
-              org_selection.push(organization);
-            }
-            else if((date.ac_dc === "d.C") && (date.year <= Number(year))){
-              org_selection.push(organization);
-            }
-          }
+      organizations_db.forEach((org) => {
+        const normal_date = org.dissolution?.normal_date;
+        if((normal_date !== undefined && normal_date !== null) && (normal_date.year === Number(year)) && (normal_date.ac_dc === ac_dc)){
+          org_selection.push(org);
         }
       });
 
       const organizations: Peticion_Organization[] = await Promise.all(org_selection.map(async (org) => await Transform_Organization(org, SongsCollection,
                                                                                                                                      AlbumsCollection, EventsCollection,
                                                                                                                                      PeopleCollection, BandsCollection)));
-      
+
       return new Response(
         JSON.stringify(organizations),
         {
@@ -556,9 +613,9 @@ const handler = async (req: Request): Promise<Response> => {
     }
     else if(path === "/organizations/double_date"){
       const year_a = searchParams.get("year_a");
-      const ac_dc_a= searchParams.get("ac_dc_1");
+      const ac_dc_a = searchParams.get("ac_dc_1");
       const year_b = searchParams.get("year_b");
-      const ac_dc_b= searchParams.get("ac_dc_2");
+      const ac_dc_b = searchParams.get("ac_dc_2");
 
       if(!year_a || !ac_dc_a || !year_b || !ac_dc_b){
         throw new Error("No se ha encontrado el año de creación y disolución");
@@ -572,18 +629,8 @@ const handler = async (req: Request): Promise<Response> => {
       organizations_db.forEach((organization) => {
         const date = organization.creation?.normal_date;
         if(date !== undefined){
-          if(ac_dc_a === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year <= Number(year_a))){
-              org_selection_1.push(organization);
-            }
-            else if(date.ac_dc === "d.C"){
-              org_selection_1.push(organization);
-            }
-          }
-          else if(ac_dc_a === "d.C"){
-            if((date.ac_dc === "d.C") && (date.year >= Number(year_a))){
-              org_selection_1.push(organization);
-            }
+          if(Limit_Date_Filter(date, Number(year_a), ac_dc_a, "Creation")){
+            org_selection_1.push(organization);
           }
         }
       });
@@ -591,18 +638,8 @@ const handler = async (req: Request): Promise<Response> => {
       organizations_db.forEach((organization) => {
         const date = organization.dissolution?.normal_date;
         if(date !== undefined){
-          if(ac_dc_b === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year >= Number(year_b))){
-              org_selection_2.push(organization);
-            }
-          }
-          else if(ac_dc_b === "d.C"){
-            if(date.ac_dc === "a.C"){
-              org_selection_2.push(organization);
-            }
-            else if((date.ac_dc === "d.C") && (date.year <= Number(year_b))){
-              org_selection_2.push(organization);
-            }
+          if(Limit_Date_Filter(date, Number(year_b), ac_dc_b, "Dissolution")){
+            org_selection_2.push(organization);
           }
         }
       });
@@ -687,7 +724,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/people/birth_date"){
+    else if(path === "/people/birth_date_limit"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -701,18 +738,68 @@ const handler = async (req: Request): Promise<Response> => {
       people_db.forEach((person) => {
         const date = person.birth_date?.normal_date;
         if(date !== undefined){
-          if(ac_dc === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year <= Number(year))){
-              peo_selection.push(person);
-            }
-            else if(date.ac_dc === "d.C"){
-              peo_selection.push(person);
-            }
+          if(Limit_Date_Filter(date, Number(year), ac_dc, "Birth")){
+            peo_selection.push(person);
           }
-          else if(ac_dc === "d.C"){
-            if((date.ac_dc === "d.C") && (date.year >= Number(year))){
-              peo_selection.push(person);
-            }
+        }
+      });
+
+      const people: Peticion_Person[] = await Promise.all(peo_selection.map(async (person) => await Transform_Person(person, SongsCollection,
+                                                                                                                     AlbumsCollection, EventsCollection,
+                                                                                                                     OrganizationsCollection, BandsCollection)));
+
+      return new Response(
+        JSON.stringify(people),
+        {
+          status: 200,
+        }
+      );
+    }
+    else if(path === "/people/birth_date"){
+      const year = searchParams.get("year");
+      const ac_dc = searchParams.get("ac_dc");
+
+      if(!year && !ac_dc){
+        throw new Error("No se ha encontrado el año de nacimiento");
+      }
+
+      const people_db: PersonDB[] = await PeopleCollection.find().toArray();
+      const people_selection: PersonDB[] = [];
+
+      people_db.forEach((person) => {
+        const normal_date= person.birth_date?.normal_date;
+        if((normal_date !== undefined && normal_date !== null) && (normal_date.year === Number(year)) && (normal_date.ac_dc === ac_dc)){
+          people_selection.push(person);
+        }
+      });
+
+      const people: Peticion_Person[] = await Promise.all(people_selection.map(async (person) => await Transform_Person(person, SongsCollection,
+                                                                                                                        AlbumsCollection, EventsCollection,
+                                                                                                                        OrganizationsCollection, BandsCollection)));
+
+      return new Response(
+        JSON.stringify(people),
+        {
+          status: 200,
+        }
+      );
+    }
+    else if(path === "/people/death_date_limit"){
+      const year = searchParams.get("year");
+      const ac_dc = searchParams.get("ac_dc");
+
+      if(!year || !ac_dc){
+        throw new Error("No se ha encontrado el año de fallecimiento");
+      }
+
+      const people_db: PersonDB[] = await PeopleCollection.find().toArray();
+      const peo_selection: PersonDB[] = [];
+
+      people_db.forEach((person) => {
+        const date = person.death_date?.normal_date;
+        if(date !== undefined){
+          if(Limit_Date_Filter(date, Number(year), ac_dc, "Death")){
+            peo_selection.push(person);
           }
         }
       });
@@ -732,35 +819,23 @@ const handler = async (req: Request): Promise<Response> => {
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
-      if(!year || !ac_dc){
+      if(!year && !ac_dc){
         throw new Error("No se ha encontrado el año de fallecimiento");
       }
 
       const people_db: PersonDB[] = await PeopleCollection.find().toArray();
-      const peo_selection: PersonDB[] = [];
+      const people_selection: PersonDB[] = [];
 
       people_db.forEach((person) => {
-        const date = person.death_date?.normal_date;
-        if(date !== undefined){
-          if(ac_dc === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year >= Number(year))){
-              peo_selection.push(person);
-            }
-          }
-          else if(ac_dc === "d.C"){
-            if(date.ac_dc === "a.C"){
-              peo_selection.push(person);
-            }
-            else if((date.ac_dc === "d.C") && (date.year <= Number(year))){
-              peo_selection.push(person);
-            }
-          }
+        const normal_date= person.death_date?.normal_date;
+        if((normal_date !== undefined && normal_date !== null) && (normal_date.year === Number(year)) && (normal_date.ac_dc === ac_dc)){
+          people_selection.push(person);
         }
       });
 
-      const people: Peticion_Person[] = await Promise.all(peo_selection.map(async (person) => await Transform_Person(person, SongsCollection,
-                                                                                                                     AlbumsCollection, EventsCollection,
-                                                                                                                     OrganizationsCollection, BandsCollection)));
+      const people: Peticion_Person[] = await Promise.all(people_selection.map(async (person) => await Transform_Person(person, SongsCollection,
+                                                                                                                        AlbumsCollection, EventsCollection,
+                                                                                                                        OrganizationsCollection, BandsCollection)));
 
       return new Response(
         JSON.stringify(people),
@@ -787,18 +862,8 @@ const handler = async (req: Request): Promise<Response> => {
       people_db.forEach((person) => {
         const date = person.birth_date?.normal_date;
         if(date !== undefined){
-          if(ac_dc_a === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year <= Number(year_a))){
-              peo_selection_1.push(person);
-            }
-            else if(date.ac_dc === "d.C"){
-              peo_selection_1.push(person);
-            }
-          }
-          else if(ac_dc_a === "d.C"){
-            if((date.ac_dc === "d.C") && (date.year >= Number(year_a))){
-              peo_selection_1.push(person);
-            }
+          if(Limit_Date_Filter(date, Number(year_a), ac_dc_a, "Birth")){
+            peo_selection_1.push(person);
           }
         }
       });
@@ -806,18 +871,8 @@ const handler = async (req: Request): Promise<Response> => {
       people_db.forEach((person) => {
         const date = person.death_date?.normal_date;
         if(date !== undefined){
-          if(ac_dc_b === "a.C"){
-            if((date.ac_dc === "a.C") && (date.year >= Number(year_b))){
-              peo_selection_2.push(person);
-            }
-          }
-          else if(ac_dc_b === "d.C"){
-            if(date.ac_dc === "a.C"){
-              peo_selection_2.push(person);
-            }
-            else if((date.ac_dc === "d.C") && (date.year <= Number(year_b))){
-              peo_selection_2.push(person);
-            }
+          if(Limit_Date_Filter(date, Number(year_b), ac_dc_b, "Death")){
+            peo_selection_1.push(person);
           }
         }
       });
@@ -976,12 +1031,32 @@ const handler = async (req: Request): Promise<Response> => {
       const book_selection: BookDB[] = [];
 
       books_db.forEach((book) => {
-        if((book.year_of_publish! >= Number(year_a)) && (book.year_of_publish !<= Number(year_b))){
+
+        if((book.year_of_publish! >= Number(year_a)) && (book.year_of_publish! <= Number(year_b))){
           book_selection.push(book);
         }
       });
 
       const books: Peticion_Book[] = await Promise.all(book_selection.map(async (book) => await Transform_Book(book, WritersCollection, SongsCollection,
+                                                                                                               AlbumsCollection, BandsCollection)));
+
+      return new Response(
+        JSON.stringify(books),
+        {
+          status: 200,
+        }
+      );
+    }
+    else if(path === "books/date"){
+      const year = searchParams.get("year");
+
+      if(!year){
+        throw new Error("No se ha encontrado el año de publicación máximo");
+      }
+
+      const books_db: BookDB[] = await BooksCollection.find({year_of_publish: Number(year)}).toArray();
+
+      const books: Peticion_Book[] = await Promise.all(books_db.map(async (book) => await Transform_Book(book, WritersCollection, SongsCollection,
                                                                                                                AlbumsCollection, BandsCollection)));
 
       return new Response(
