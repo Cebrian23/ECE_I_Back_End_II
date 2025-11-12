@@ -151,7 +151,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/events/start_date_limit"){
+    else if(path === "/events/start_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -182,7 +182,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/events/start_date"){
+    /*else if(path === "/events/start_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -210,8 +210,8 @@ const handler = async (req: Request): Promise<Response> => {
           status: 200,
         }
       );
-    }
-    else if(path === "/events/end_date_limit"){
+    }*/
+    else if(path === "/events/end_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -242,7 +242,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/events/end_date"){
+    /*else if(path === "/events/end_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -270,7 +270,7 @@ const handler = async (req: Request): Promise<Response> => {
           status: 200,
         }
       );
-    }
+    }*/
     else if(path === "/events/double_date"){
       const year_a = searchParams.get("year_a");
       const ac_dc_a = searchParams.get("ac_dc_1");
@@ -491,7 +491,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/organizations/creation_date_limit"){
+    else if(path === "/organizations/creation_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -522,7 +522,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/organizations/creation_date"){
+    /*else if(path === "/organizations/creation_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -550,8 +550,8 @@ const handler = async (req: Request): Promise<Response> => {
           status: 200,
         }
       );
-    }
-    else if(path === "/organizations/dissolution_date_limit"){
+    }*/
+    else if(path === "/organizations/dissolution_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -582,7 +582,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/organizations/dissolution_date"){
+    /*else if(path === "/organizations/dissolution_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -610,7 +610,7 @@ const handler = async (req: Request): Promise<Response> => {
           status: 200,
         }
       );
-    }
+    }*/
     else if(path === "/organizations/double_date"){
       const year_a = searchParams.get("year_a");
       const ac_dc_a = searchParams.get("ac_dc_1");
@@ -724,7 +724,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/people/birth_date_limit"){
+    else if(path === "/people/birth_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -755,7 +755,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/people/birth_date"){
+    /*else if(path === "/people/birth_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -783,8 +783,8 @@ const handler = async (req: Request): Promise<Response> => {
           status: 200,
         }
       );
-    }
-    else if(path === "/people/death_date_limit"){
+    }*/
+    else if(path === "/people/death_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -815,7 +815,7 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-    else if(path === "/people/death_date"){
+    /*else if(path === "/people/death_date"){
       const year = searchParams.get("year");
       const ac_dc = searchParams.get("ac_dc");
 
@@ -843,7 +843,7 @@ const handler = async (req: Request): Promise<Response> => {
           status: 200,
         }
       );
-    }
+    }*/
     else if(path === "/people/double_date"){
       const year_a = searchParams.get("year_a");
       const ac_dc_a= searchParams.get("ac_dc_1");
