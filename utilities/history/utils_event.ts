@@ -38,6 +38,7 @@ export const Transform_Event = async (Event: EventDB, SongCol: Collection<SongDB
         organizations_involved: org_inv.map((org) => Short_organization(org)),
         talked_about_in_song: await Promise.all(songs_in.map(async (song) => await Short_song(song, AlbCol, BandCol))),
         talked_about_in_album: await Promise.all(album_in.map(async (album) => await Short_album(album, BandCol))),
+        still_active: Event.still_active,
     }
 }
 
