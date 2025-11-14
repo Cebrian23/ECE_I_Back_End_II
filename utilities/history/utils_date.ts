@@ -48,7 +48,7 @@ export const Limit_Date_Filter = (date: Date_yymmdd, year: number, ac_dc: string
  * @param date Es el siglo que se va a evaluar
  * @param century Es el siglo a partir o hasta el que se va a limitar
  * @param ac_dc Indica si el año que limita es antes o después de Cristo
- * @param filter_type Filtro que indica si la función limita hasta o a partir de una fecha en formato yy/mm/dd
+ * @param filter_type Filtro que indica si la función limita hasta o a partir de un siglo
  * @returns 
  */
 export const Limit_Century_Filter = (date: Date_century, century: string, ac_dc: string, filter_type: string): boolean => {
@@ -78,6 +78,53 @@ export const Limit_Century_Filter = (date: Date_century, century: string, ac_dc:
         return true;
       }
       else if((date.ac_dc === "d.C") && (Century_Transformer(date.century) <= Century_Transformer(century))){
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Función que permite saber si un año convertido en siglo cumple con las condiciones del filtro de fechas
+ * @param date Es la fecha en formato yy/mm/dd
+ * @param century Es el siglo a partir o hasta el que se va a limitar
+ * @param ac_dc Indica si el año que limita es antes o después de Cristo
+ * @param filter_type Filtro que indica si la función limita hasta o a partir de un siglo
+ * @returns 
+ */
+export const Limit_Century_Filter_Number = (date_number: Date_yymmdd, century: number, ac_dc: string, filter_type: string): boolean => {
+  const date = (date_number.year/100)+1;
+  const date_acdc = date_number.ac_dc;
+  const century_2 = (century/100)+1;
+
+  if(filter_type === "Start" || filter_type === "Birth" || filter_type === "Creation"){
+    if(ac_dc === "a.C"){
+      if((date_acdc === "a.C") && (date <= century_2)){
+        return true;
+      }
+      else if(date_acdc === "d.C"){
+        return true;
+      }
+    }
+    else if(ac_dc === "d.C"){
+      if((date_acdc === "d.C") && (date >= century_2)){
+        return true;
+      }
+    }
+  }
+  else if(filter_type === "End" || filter_type === "Death" || filter_type === "Dissolution"){
+    if(ac_dc === "a.C"){
+      if((date_acdc === "a.C") && (date >= century_2)){
+        return true;
+      }
+    }
+    else if(ac_dc === "d.C"){
+      if(date_acdc === "a.C"){
+        return true;
+      }
+      else if((date_acdc === "d.C") && (date <= century_2)){
         return true;
       }
     }
